@@ -7,20 +7,11 @@
 
 <!-- versionCode is optional and Android only -->
 
-  <name>Arish Bio</name>
+  <name>Attendance</name>
 
   <description>
-      Aris is a leading Bio Naturals product Manufacturing Company.
+      Aris Bionaturals employee attendance app.
   </description>
-  
-  <platform name="android">
-        <icon src="res/arish_sales_36x36.png" density="ldpi" />
-        <icon src="res/arish_sales_48x48.png" density="mdpi" />
-        <icon src="res/arish_sales_72x72.png" density="hdpi" />
-        <icon src="res/arish_sales_96x96.png" density="xhdpi" />
-        <icon src="res/arish_sales_144x144.png" density="xxhdpi" />
-        <icon src="res/arish_sales_196x196.png" density="xxxhdpi" />
-    </platform>
 
   <author href="https://build.phonegap.com" email="support@phonegap.com">
       Sukanta Das Bairagya
