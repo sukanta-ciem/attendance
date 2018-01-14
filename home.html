@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Attendance App</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/global.css" />
+<script src="js/jquery-1.9.1.js"></script>
+<script>
+$(document).ready(function(){
+    $(".header_btn").click(function(){
+        $(".header_btn_area").toggleClass("header_btn_area_add");
+    });
+});
+</script>
+<script>
+function dutyIn(){
+	var r=confirm("Are you sure Duty In ?");
+	if(r==true)
+	{
+		var employee_id=attendanceadmin_id;
+		$.ajax({
+			type: 'post',
+			url: 'ajax/ajax_duty_in.php',
+			data: 'employee_id='+employee_id,
+			success: function(msg)
+			{
+				var data = JSON.parse(msg);
+				console.log(data);
+				if(data[0]=='Yes')
+				{
+					$("#load_atten").load('ajax/ajax_load_attendance.php');
+				}
+				else
+				{
+					alert("Error Occured!");
+				}
+			}
+		});
+	}
+}
+function dutyOut(){
+	var r=confirm("Are you sure Duty Out ?");
+	if(r==true)
+	{
+		var employee_id=attendanceadmin_id;
+		$.ajax({
+			type: 'post',
+			url: 'ajax/ajax_duty_out.php',
+			data: 'employee_id='+employee_id,
+			success: function(msg)
+			{
+				var data = JSON.parse(msg);
+				console.log(data);
+				if(data[0]=='Yes')
+				{
+					$("#load_atten").load('ajax/ajax_load_attendance.php');
+				}
+				else
+				{
+					alert("Error Occured!");
+				}
+			}
+		});
+	}
+}
+
+function remarksBtn(){
+	var remarks_val=$("#remarks").val();
+	var employee_id=attendanceadmin_id;
+	
+	if(remarks_val=="")
+	{
+		alert("Enter Remarks!");
+	}
+	else
+	{
+		$.ajax({
+			type: 'post',
+			url: 'ajax/ajax_remarks.php',
+			data: 'employee_id='+employee_id+'&remarks_val='+remarks_val,
+			success: function(msg)
+			{
+				var data = JSON.parse(msg);
+				console.log(data);
+				if(data[0]=='Yes')
+				{
+					alert("Your information has been submitted successfully.!");
+					$("#remarks").val("");
+				}
+				else
+				{
+					alert("Error Occured!");
+					$("#remarks").val("");
+				}
+			}
+		});
+	}
+}
+</script>
+</head>
+<body id="home">
+<div class="logbox">
+<div class="logo_fixed">
+<div class="header_btn_frame">
+        <div class="header_btn"></div>
+        <div class="header_btn_area">
+            <a href="log_out.html"><span>Log Out</span></a>
+            <div class="clear"></div>                     
+            <a href="home.html"><span>Home</span></a>
+            <div class="clear"></div>                        
+            <a href="#"><span>View Attendance History</span></a>
+            <div class="clear"></div>                        
+            <a href="#"><span>View Remarks History</span></a>
+            <div class="clear"></div>                        
+            <a href="#"><span>View Profile</span></a>  
+            <div class="clear"></div>                        
+            <a href="#"><span>Change Password</span></a>                   
+        </div>
+</div>
+<img src="images/logo.png" alt="">
+<div class="title">Post Your Attendance</div>
+<div class="clear"></div>
+<div class="erroe_msg"></div>
+<div class="clear"></div>
+<div class="btn_div_img" id="load_atten">
+	<div id="duty_in_f" class="dtnf">
+    	<span></span>
+        <button class="btn" id="duty_in" onclick="dutyIn()" type="button" name="submit">Duty In Time &raquo;</button>
+    </div>
+    <div class="clear"></div>
+    <div id="duty_out_f" class="dtnf">
+    	<span></span>
+    </div>
+	<div id="duty_in_f" class="dtnf">
+    	<span></span>
+    </div>
+    <div class="clear"></div>
+    <div id="duty_out_f" class="dtnf">
+        <button class="btn" id="duty_out" onclick="dutyOut()" type="button" name="submit">Duty Out Time &raquo;</button>
+    </div>
+	<div id="duty_in_f" class="dtnf">
+        <button class="btn" id="duty_in" onclick="dutyIn()" type="button" name="submit">Duty In Time &raquo;</button>
+    </div>
+    <div class="clear"></div>
+    <div id="duty_out_f" class="dtnf">
+        <button class="btn" id="duty_out" onclick="dutyOut()" type="button" name="submit">Duty Out Time &raquo;</button>
+    </div>    
+<div id="duty_in_f" class="dtnf"><button class="btn" id="duty_in" onclick="dutyIn()" type="button" name="submit">Duty In Time &raquo;</button></div>
+<div class="clear"></div>
+<div id="duty_out_f" class="dtnf"><button class="btn" id="duty_out" onclick="dutyOut()" type="button" name="submit">Duty Out Time &raquo;</button></div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<form action="" method="post">
+<div class="inptext_frame"><textarea id="remarks" class="textarea search_1" type="text" autocomplete="off" placeholder="Remarks" name="remarks" onblur="if (this.placeholder == '') {this.placeholder = 'Remarks';}"
+             onfocus="if (this.placeholder == 'Remarks') {this.placeholder = '';}"></textarea></div>
+<div class="clear"></div>
+<div class="btn_div_img">
+<button class="btn" id="remarks_btn" type="button" name="remarks_btn" onclick="remarksBtn()">Post your Remarks &raquo;</button>
+</div>
+<div class="clear"></div>
+</form>
+</div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="footr">&copy; arishbionaturals.com All Rights Reserved.</div>
+</body>
+</html>
