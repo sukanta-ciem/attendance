@@ -17,7 +17,7 @@
       Sukanta Das Bairagya
   </author>
   <plugin name="cordova-plugin-whitelist" spec="1" />
-    <gap:plugin name="org.apache.cordova.geolocation" />
+    <plugin name="cordova-plugin-geolocation-GeoBroker" />
   <access origin="*" subdomains="true" />
   <allow-navigation href="*" />
     
