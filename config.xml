@@ -19,5 +19,11 @@
   <plugin name="cordova-plugin-whitelist" spec="1" />
   <access origin="*" subdomains="true" />
   <allow-navigation href="*" />
+    
+  <feature name="Geolocation">
+    <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
+  </feature>
+  <plugin name="org.apache.cordova.geolocation" />
+  <plugin name="org.apache.cordova.device" version="0.2.3" />
 
 </widget>
