@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/global.css" />
-<title>Attendance App</title>
+<title>Attendance App</title><style type="text/css">#wrapper{	position: absolute;	background-color: #FFF;	text-align: center;	opacity: 0.8;	vertical-align: middle;	top: 0px;	bottom: 0px;	left: 0px;	right: 0px;	display: inline-flex;}#loader-cont{	height: 50px;	width: 49px;	background: #FFF none repeat scroll 0% 0%;	margin: 300px auto;	border-radius: 5px;	padding: 3px;}.hidden{display:none !important;}</style>
 </head>
-<body id="index">
+<body id="index"><div id="wrapper" class="hidden"><div id="loader-cont"><img src="images/ajax-loader.gif" /></div></div>
 <div class="logbox">
 <div class="logo_fixed">
 <img src="images/logo.png" alt="">
@@ -20,7 +20,7 @@
              onfocus="if (this.placeholder == 'Password') {this.placeholder = '';}"></div>
 <div class="clear"></div>
 <div class="btn_div_img">
-	<button class="btn" id="qsbFormBtn" type="button" name="submit">Login &raquo;</button>
+	<button class="btn" id="qsbFormBtn" type="button" onclick="loginNow();" name="submit">Login &raquo;</button>
     <div class="clear"></div>
 	<a class="fpass" href="#">Forgot your password?</a>
 </div>
@@ -31,4 +31,4 @@
 <div class="clear"></div>
 <div class="footr">&copy; arishbionaturals.com All Rights Reserved.</div>
 </body>
-</html>
+</html><script type="text/javascript" src="js/jquery-1.9.1.js"></script><script type="text/javascript">	(function() {	   // your page initialization code here	   // the DOM will be available here		document.getElementById("wrapper").className = "";		setTimeout(function(){ document.getElementById("wrapper").className = "hidden"; }, 2000);	})();	function loginNow(){		document.getElementById("wrapper").className = "";		setTimeout(function(){			alert("Please check your internet Connection!");			document.getElementById("wrapper").className = "hidden";		}, 5000);	}</script>
