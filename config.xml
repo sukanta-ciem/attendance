@@ -23,7 +23,6 @@
   <feature name="Geolocation">
     <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
   </feature>
-  <plugin name="org.apache.cordova.geolocation" />
-  <plugin name="org.apache.cordova.device" version="0.2.3" />
+  <plugin name="cordova-plugin-geolocation" source="npm" />
 
 </widget>
