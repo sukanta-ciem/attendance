@@ -15,14 +15,17 @@ $(document).on("click", "#duty_in", function(){
 	var r = confirm("Are you sure you want to duty in?");
 	if(r == true){
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
-		function onSuccess(){
+		function onSuccess(position){
+			console.log(position);
 			var currentdate = new Date(); 
 			var datetime = "Duty In Time: " + currentdate.getDate() + "/"
 							+ (currentdate.getMonth()+1)  + "/" 
 							+ currentdate.getFullYear() + " @ "  
 							+ currentdate.getHours() + ":"  
 							+ currentdate.getMinutes() + ":" 
-							+ currentdate.getSeconds();
+							+ currentdate.getSeconds() + "<br>Lat: "
+							+ position.coords.latitude + "<br>:Long: "
+							+ position.coords.longitude;
 							
 			$("#duty_in").addClass("disabledButton");
 			$(".duty_in_time_txt").text(datetime);
