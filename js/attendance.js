@@ -3,6 +3,79 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 var attendanceadmin_id = localStorage.getItem("attendanceadmin_id");
 var attendancelogin_id = localStorage.getItem("attendancelogin_id");
 
+var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+
+function sync(){
+	document.getElementById("wrapper").className = "";
+	var atdet = localStorage.getItem("attendance_detail");
+	if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+		//do nothing
+		document.getElementById("wrapper").className = "hidden";
+	}else{
+		$.ajax({
+			type: 'post',
+			url: site_url+'api/attendance_api.php',
+			data: {"attendance" : encodeURIComponent(atdet), "employee_id" : attendanceadmin_id},
+			success: function(msg){
+				var data = JSON.parse(msg);
+				if(data.status === "success"){
+					var atten_feedback = JSON.stringify(data.attendance);
+					localStorage.setItem("attendance_detail", atten_feedback);
+				}else{
+					alert("Error Occured!");
+				}
+				document.getElementById("wrapper").className = "hidden"; 
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				document.getElementById("wrapper").className = "hidden"; 
+				return false;
+			}
+		});
+	}
+}
+
+$(document).ready(function(){
+	document.getElementById("wrapper").className = "";
+	setTimeout(function(){ 
+		document.getElementById("wrapper").className = "hidden"; 
+		sync();
+	}, 2000);
+	
+	var loggedIn = localStorage.getItem("loggedIn_attendance");
+	if(loggedIn === null || loggedIn === "null" || typeof loggedIn === typeof undefined || loggedIn == "" || loggedIn == "[]" || loggedIn != "ok"){
+		window.location.href = "index.html";
+	}
+	
+	var atdet = localStorage.getItem("attendance_detail");
+	if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+		//do nothing
+	}else{
+		var at_det = JSON.parse(atdet);
+		for(var i=0; i< at_det.length; i++){
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+			
+			if(dd<10){
+				dd='0'+dd;
+			} 
+			if(mm<10){
+				mm='0'+mm;
+			} 
+			var todayDate = dd+'/'+mm+'/'+yyyy;
+			
+			if(at_det[i].date == todayDate && at_det[i].duty_in_time != ""){
+				$("#duty_in").addClass("disabledButton");
+			}
+			
+			if(at_det[i].date == todayDate && at_det[i].duty_out_time != ""){
+				$("#duty_out").addClass("disabledButton");
+			}
+		}
+	}
+});
+
 function loggedOut(){
 	localStorage.setItem("loggedIn", "no");
 	localStorage.setItem("attendanceadmin_id", "");
@@ -11,85 +84,116 @@ function loggedOut(){
 }
 
 $(document).on("click", "#duty_in", function(){
-
+	if($(this).hasClass("disabledButton")){
+		return false;
+	}
 	var r = confirm("Are you sure you want to duty in?");
 	if(r == true){
-		navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
 		function onSuccess(position){
-			console.log(position);
-			var currentdate = new Date(); 
-			var datetime = "Duty In Time: " + currentdate.getDate() + "/"
-							+ (currentdate.getMonth()+1)  + "/" 
-							+ currentdate.getFullYear() + " @ "  
-							+ currentdate.getHours() + ":"  
-							+ currentdate.getMinutes() + ":" 
-							+ currentdate.getSeconds() + "<br>Lat: "
-							+ position.coords.latitude + "<br>:Long: "
-							+ position.coords.longitude;
-							
+			
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+
+			var yyyy = today.getFullYear();
+			
+			var hh = today.getHours();
+			var mn = today.getMinutes();
+			var ss = today.getSeconds();
+			
+			if(dd<10){
+				dd='0'+dd;
+			} 
+			if(mm<10){
+				mm='0'+mm;
+			} 
+			var todayDate = dd+'/'+mm+'/'+yyyy;
+			
+			if(hh<10){
+				hh='0'+hh;
+			}
+			
+			if(mn<10){
+				mn='0'+mn;
+			}
+			
+			if(ss<10){
+				ss='0'+ss;
+			}
+			
+			var datetime = "Duty In Time: " + todayDate + " @ "  
+							+ hh + ":"  
+							+ mn + ":" 
+							+ ss;
+			
+			//var ts = Math.round((new Date()).getTime() / 1000);
+			var ts = hh + ":" + mn + ":" + ss;
+			
+			var atdet = localStorage.getItem("attendance_detail");
+			
+			var latitude = position.coords.latitude, 
+			longitude = position.coords.longitude, 
+			accuracy = position.coords.accuracy;
+			
+			if(parseInt(accuracy) > 100){
+				alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
+				return false;
+			}
+			
+			if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+				var at_det = [];
+				
+				var atDetails = {
+					"attendanceadmin_id": attendanceadmin_id,
+					"attendancelogin_id": attendancelogin_id,
+					"date": todayDate,
+					"duty_in_time": ts,
+					"duty_out_time": "",
+					"latitude_in": latitude,
+					"longitude_in": longitude,
+					"accuracy_in": accuracy,
+					"latitude_out": "",
+					"longitude_out": "",
+					"accuracy_out": "",
+					"remarks": "",
+					"remarks_time": "",
+					"flag": 0
+				};
+				
+				at_det.push(atDetails);
+				localStorage.setItem("attendance_detail", JSON.stringify(at_det));
+				
+			}else{
+				var at_det = JSON.parse(atdet);
+				
+				var atDetails = {
+					"attendanceadmin_id": attendanceadmin_id,
+					"attendancelogin_id": attendancelogin_id,
+					"date": todayDate,
+					"duty_in_time": ts,
+					"duty_out_time": "",
+					"latitude_in": latitude,
+					"longitude_in": longitude,
+					"accuracy_in": accuracy,
+					"latitude_out": "",
+					"longitude_out": "",
+					"accuracy_out": "",
+					"remarks": "",
+					"remarks_time": "",
+					"flag": 0
+				};
+				
+				at_det.push(atDetails);
+				localStorage.setItem("attendance_detail", JSON.stringify(at_det));
+			}
+			
 			$("#duty_in").addClass("disabledButton");
 			$(".duty_in_time_txt").text(datetime);
 		}
 		function onError(){
-			alert("Turn on your location and retry!");
+			alert("Please Turn on your location and retry!");
 			return false;
-		}
-		
-		
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth()+1; //January is 0!
-
-		var yyyy = today.getFullYear();
-		if(dd<10){
-			dd='0'+dd;
-		} 
-		if(mm<10){
-			mm='0'+mm;
-		} 
-		var todayDate = dd+'/'+mm+'/'+yyyy;
-		
-		var ts = Math.round((new Date()).getTime() / 1000);
-		
-		var atdet = localStorage.getItem("attendance_detail");
-		
-		var latitude, longitude, accuracy;
-		
-		if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
-			var at_det = [];
-			
-			var atDetails = {
-				"attendanceadmin_id": attendanceadmin_id,
-				"attendancelogin_id": attendancelogin_id,
-				"date": todayDate,
-				"duty_in_time": ts,
-				"duty_out_time": "",
-				"latitude": latitude,
-				"longitude": longitude,
-				"accuracy": accuracy,
-				"flag": 0
-			};
-			
-			at_det.push(atDetails);
-			localStorage.setItem("attendance_detail", JSON.stringify(at_det));
-			
-		}else{
-			var at_det = JSON.parse(atdet);
-			
-			var atDetails = {
-				"attendanceadmin_id": attendanceadmin_id,
-				"attendancelogin_id": attendancelogin_id,
-				"date": todayDate,
-				"duty_in_time": ts,
-				"duty_out_time": "",
-				"latitude": latitude,
-				"longitude": longitude,
-				"accuracy": accuracy,
-				"flag": 0
-			};
-			
-			at_det.push(atDetails);
-			localStorage.setItem("attendance_detail", JSON.stringify(at_det));
 		}
 	}
 });
@@ -101,18 +205,85 @@ $(document).on("click", "#duty_out", function(){
 	}
 	var r = confirm("Are you sure you want to duty Out?");
 	if(r == true){
-		navigator.geolocation.getCurrentPosition(onSuccess, onError);
-		function onSuccess(){
-			var currentdate = new Date(); 
-			var datetime = "Duty Out Time: " + currentdate.getDate() + "/"
-							+ (currentdate.getMonth()+1)  + "/" 
-							+ currentdate.getFullYear() + " @ "  
-							+ currentdate.getHours() + ":"  
-							+ currentdate.getMinutes() + ":" 
-							+ currentdate.getSeconds();
-							
-			$("#duty_out").addClass("disabledButton");
-			$(".duty_out_time_txt").text(datetime);
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+		function onSuccess(position){
+			
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+
+			var yyyy = today.getFullYear();
+			
+			var hh = today.getHours();
+			var mn = today.getMinutes();
+			var ss = today.getSeconds();
+			
+			if(dd<10){
+				dd='0'+dd;
+			} 
+			if(mm<10){
+				mm='0'+mm;
+			} 
+			var todayDate = dd+'/'+mm+'/'+yyyy;
+			
+			if(hh<10){
+				hh='0'+hh;
+			}
+			
+			if(mn<10){
+				mn='0'+mn;
+			}
+			
+			if(ss<10){
+				ss='0'+ss;
+			}
+			
+			var datetime = "Duty Out Time: " + todayDate + " @ "  
+							+ hh + ":"  
+							+ mn + ":" 
+							+ ss;
+			
+			var atdet = localStorage.getItem("attendance_detail");
+			
+			var latitude = position.coords.latitude, 
+			longitude = position.coords.longitude, 
+			accuracy = position.coords.accuracy;
+			
+			if(parseInt(accuracy) > 100){
+				alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
+				return false;
+			}
+			
+			if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+				alert("Today your Duty In time has not been recorded!");
+				return false;
+			}else{
+				var dutyInFlag = false;
+				var at_det = JSON.parse(atdet);
+				for(var i=0; i< at_det.length; i++){
+					if(at_det[i].date == todayDate && at_det[i].duty_in_time != ""){
+						dutyInFlag = true;
+						//var ts = Math.round((new Date()).getTime() / 1000);
+						var ts = hh + ":" + mn + ":" + ss;
+						
+						at_det[i].duty_out_time = ts;
+						at_det[i].latitude_out = latitude;
+						at_det[i].longitude_out = longitude;
+						at_det[i].accuracy_out = accuracy;
+						
+						at_det_string = JSON.stringify(at_det);
+						localStorage.setItem("attendance_detail", at_det_string);
+						
+						$("#duty_out").addClass("disabledButton");
+						$(".duty_out_time_txt").text(datetime);
+					}
+				}
+				
+				if(!dutyInFlag){
+					alert("Today your Duty In time has not been recorded!");
+					return false;
+				}
+			}
 		}
 		function onError(){
 			alert("Turn on your location and retry!");
@@ -122,6 +293,66 @@ $(document).on("click", "#duty_out", function(){
 });
 
 function remarksBtn(){
-	$("#remarks").val("");
-	alert("Remarks has been saved successfully!");
+	var atdet = localStorage.getItem("attendance_detail");
+	var remarks = $("#remarks").val();
+	var at_det = JSON.parse(atdet);
+	
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+
+	var yyyy = today.getFullYear();
+	
+	var hh = today.getHours();
+	var mn = today.getMinutes();
+	var ss = today.getSeconds();
+	
+	if(dd<10){
+		dd='0'+dd;
+	} 
+	if(mm<10){
+		mm='0'+mm;
+	} 
+	var todayDate = dd+'/'+mm+'/'+yyyy;
+	
+	if(hh<10){
+		hh='0'+hh;
+	}
+	
+	if(mn<10){
+		mn='0'+mn;
+	}
+	
+	if(ss<10){
+		ss='0'+ss;
+	}
+	
+	var ts = hh + ":" + mn + ":" + ss;
+	
+	var dutyInFlag = false;
+	if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+		alert("To submit a Remark put your Duty In First!");
+		return false;
+	}else{
+		for(var i=0; i< at_det.length; i++){
+			if(at_det[i].date == todayDate && at_det[i].duty_in_time != ""){
+				dutyInFlag = true;
+				at_det[i].remarks = remarks;
+				at_det[i].remarks_time = ts;
+				
+				at_det_string = JSON.stringify(at_det);
+				localStorage.setItem("attendance_detail", at_det_string);
+				
+				$("#remarks").val("");
+				alert("Remarks has been saved successfully!");
+			}
+		}
+		
+		if(!dutyInFlag){
+			alert("To submit a Remark put your Duty In First!");
+			return false;
+		}
+	}
+	
+	
 }
