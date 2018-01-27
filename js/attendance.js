@@ -67,17 +67,21 @@ $(document).ready(function(){
 			
 			if(at_det[i].date == todayDate && at_det[i].duty_in_time != ""){
 				$("#duty_in").addClass("disabledButton");
+				var datetime_in = "Duty In Time: " + at_det[i].date + " @ " + at_det[i].duty_in_time;
+				$(".duty_in_time_txt").text(datetime_in);
 			}
 			
 			if(at_det[i].date == todayDate && at_det[i].duty_out_time != ""){
 				$("#duty_out").addClass("disabledButton");
+				var datetime_out = "Duty Out Time: " + at_det[i].date + " @ " + at_det[i].duty_out_time;
+				$(".duty_out_time_txt").text(datetime_out);
 			}
 		}
 	}
 });
 
 function loggedOut(){
-	localStorage.setItem("loggedIn", "no");
+	localStorage.setItem("loggedIn_attendance", "no");
 	localStorage.setItem("attendanceadmin_id", "");
 	localStorage.setItem("attendancelogin_id", "");
 	window.location.href = "index.html";
