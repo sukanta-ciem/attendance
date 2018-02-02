@@ -34,12 +34,43 @@ function sync(){
 	}
 }
 
+function syncInBackground(){
+	//document.getElementById("wrapper").className = "";
+	var atdet = localStorage.getItem("attendance_detail");
+	if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+		//do nothing
+		//document.getElementById("wrapper").className = "hidden";
+	}else{
+		$.ajax({
+			type: 'post',
+			url: site_url+'api/attendance_api.php',
+			data: {"attendance" : encodeURIComponent(atdet), "employee_id" : attendanceadmin_id},
+			success: function(msg){
+				var data = JSON.parse(msg);
+				if(data.status === "success"){
+					var atten_feedback = JSON.stringify(data.attendance);
+					localStorage.setItem("attendance_detail", atten_feedback);
+				}else{
+					//alert("Error Occured!");
+				}
+				//document.getElementById("wrapper").className = "hidden"; 
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				//document.getElementById("wrapper").className = "hidden"; 
+				return false;
+			}
+		});
+	}
+}
+
 $(document).ready(function(){
 	document.getElementById("wrapper").className = "";
 	setTimeout(function(){ 
 		document.getElementById("wrapper").className = "hidden"; 
 		sync();
 	}, 2000);
+	
+	//setInterval(function(){ syncInBackground(); }, 4000);
 	
 	var loggedIn = localStorage.getItem("loggedIn_attendance");
 	if(loggedIn === null || loggedIn === "null" || typeof loggedIn === typeof undefined || loggedIn == "" || loggedIn == "[]" || loggedIn != "ok"){
@@ -194,6 +225,7 @@ $(document).on("click", "#duty_in", function(){
 			
 			$("#duty_in").addClass("disabledButton");
 			$(".duty_in_time_txt").text(datetime);
+			sync();
 		}
 		function onError(){
 			alert("Please Turn on your location and retry!");
@@ -280,6 +312,7 @@ $(document).on("click", "#duty_out", function(){
 						
 						$("#duty_out").addClass("disabledButton");
 						$(".duty_out_time_txt").text(datetime);
+						sync();
 					}
 				}
 				
@@ -349,6 +382,7 @@ function remarksBtn(){
 				
 				$("#remarks").val("");
 				alert("Remarks has been saved successfully!");
+				sync();
 			}
 		}
 		
