@@ -171,7 +171,7 @@ $(document).on("click", "#duty_in", function(){
 			longitude = position.coords.longitude, 
 			accuracy = position.coords.accuracy;
 			
-			if(parseInt(accuracy) > 100){
+			if(parseInt(accuracy) > 150){
 				alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
 				return false;
 			}
@@ -285,7 +285,7 @@ $(document).on("click", "#duty_out", function(){
 			longitude = position.coords.longitude, 
 			accuracy = position.coords.accuracy;
 			
-			if(parseInt(accuracy) > 100){
+			if(parseInt(accuracy) > 150){
 				alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
 				return false;
 			}
