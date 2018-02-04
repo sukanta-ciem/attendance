@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html><html>
+<head>
+<title>Attendance App</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="jquery-ui-1.10.2/jquery.ui.all.css" />
+<link rel="stylesheet" href="css/global.css" />
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script>
+$(document).ready(function(){
+    $(".header_btn").click(function(){
+        $(".header_btn_area").toggleClass("header_btn_area_add");
+    });
+});
+</script>
+<script>
+	$(function() {
+		$( "#from" ).datepicker({
+			defaultDate: "+1w",
+			dateFormat: "d-m-yy",
+			changeMonth: true,
+			numberOfMonths: 1,
+			onClose: function( selectedDate ) {
+				$( "#to" ).datepicker( "option", "minDate", selectedDate );
+			}
+		});
+		$( "#to" ).datepicker({
+			defaultDate: "+1w",
+			dateFormat: "d-m-yy",
+			changeMonth: true,
+			numberOfMonths: 1,
+			onClose: function( selectedDate ) {
+				$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+			}
+		});
+	});</script><style>.disabledButton{	background: #ccc !important;	pointer-events: none;}</style><style type="text/css">#wrapper{	position: absolute;	background-color: #000;	text-align: center;	opacity: 0.5;	vertical-align: middle;	top: 0px;	bottom: 0px;	left: 0px;	right: 0px;	display: inline-flex;	z-index: 99999999999;}#loader-cont{	height: 50px;	width: 49px;	background: #FFF none repeat scroll 0% 0%;	margin: 300px auto;	border-radius: 5px;	padding: 3px;}.hidden{display:none !important;}</style>
+</head>
+<body id="view_att_hist"><div id="wrapper" class="hidden"><div id="loader-cont"><img src="images/ajax-loader.gif" /></div></div>
+<div class="logbox">
+<div class="logo_fixed">
+<div class="header_btn_frame">
+        <div class="header_btn"></div>
+        <div class="header_btn_area">
+            <a href="#" onclick="loggedOut();"><span>Log Out</span></a>
+            <div class="clear"></div>                     
+            <a href="home.html"><span>Home</span></a>
+            <div class="clear"></div>                        
+            <a href="view_attendance_history.html"><span>View Attendance History</span></a>
+            <div class="clear"></div>                        
+            <a href="view_remarks_history.html"><span>View Remarks History</span></a>
+            <div class="clear"></div>                        
+            <a href="#"><span>View Profile</span></a>     
+            <div class="clear"></div>                        
+            <a href="#"><span>Change Password</span></a>                
+        </div>
+</div>
+<img src="images/logo.png" alt="">
+<div class="title">View Attendance History</div>
+<div class="clear"></div>
+<div class="erroe_msg"></div>
+<div class="clear"></div>
+<form action="" method="post" id="viewAttendance"><input type="hidden" name="attendanceadmin_id" id="attendanceadmin_id">
+<div class="inptext_frame date_pic"><input id="from" readonly="readonly" class="search_1" type="text" autocomplete="off" name="from_date" placeholder="From date" value=""></div>
+<div class="clear"></div>
+<div class="inptext_frame date_pic"><input id="to" readonly="readonly" class="search_1" type="text" autocomplete="off" name="to_date" placeholder="To date" value=""></div>
+<div class="clear"></div>
+<div class="btn_div_img">
+<button class="btn" id="attendance_btn" type="button" name="search">Search &raquo;</button>
+</div>
+<div class="clear"></div>
+</form>
+<div class="clear"></div>
+<div class="view_tbl">
+	
+</div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+
+</div>
+<div class="clear"></div>
+<div class="footr">&copy; arishbionaturals.com All Rights Reserved.</div>
+</body>
+</html><script src="js/attendance.js"></script>
