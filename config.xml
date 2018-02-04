@@ -12,6 +12,15 @@
   <description>
       Aris Bionaturals employee attendance app.
   </description>
+    
+  <platform name="android">
+        <icon src="res/icon-36x36.png" density="ldpi" />
+        <icon src="res/icon-48x48.png" density="mdpi" />
+        <icon src="res/icon-72x72.png" density="hdpi" />
+        <icon src="res/icon-96x96.png" density="xhdpi" />
+        <icon src="res/icon-144x144.png" density="xxhdpi" />
+        <icon src="res/icon-196x196.png" density="xxxhdpi" />
+    </platform>
 
   <author href="https://build.phonegap.com" email="support@phonegap.com">
       Sukanta Das Bairagya
