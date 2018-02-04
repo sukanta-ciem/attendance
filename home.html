@@ -1,13 +1,12 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html><html>
 <head>
 <title>Attendance App</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/global.css" />
-<script src="js/jquery-1.9.1.js"></script><script src="js/attendance.js"></script><script type="text/javascript">$(document).ready(function(){    $(".header_btn").click(function(){        $(".header_btn_area").toggleClass("header_btn_area_add");    });});</script><style>.disabledButton{	background: #ccc !important;	pointer-events: none;}</style><style type="text/css">#wrapper{	position: absolute;	background-color: #000;	text-align: center;	opacity: 0.5;	vertical-align: middle;	top: 0px;	bottom: 0px;	left: 0px;	right: 0px;	display: inline-flex;	z-index: 99999999999;}#loader-cont{	height: 50px;	width: 49px;	background: #FFF none repeat scroll 0% 0%;	margin: 300px auto;	border-radius: 5px;	padding: 3px;}.hidden{display:none !important;}</style>
+<script src="js/jquery-1.9.1.js"></script><script type="text/javascript">$(document).ready(function(){    $(".header_btn").click(function(){        $(".header_btn_area").toggleClass("header_btn_area_add");    });});</script><style>.disabledButton{	background: #ccc !important;	pointer-events: none;}</style><style type="text/css">#wrapper{	position: absolute;	background-color: #000;	text-align: center;	opacity: 0.5;	vertical-align: middle;	top: 0px;	bottom: 0px;	left: 0px;	right: 0px;	display: inline-flex;	z-index: 99999999999;}#loader-cont{	height: 50px;	width: 49px;	background: #FFF none repeat scroll 0% 0%;	margin: 300px auto;	border-radius: 5px;	padding: 3px;}.hidden{display:none !important;}</style>
 </head>
-<body id="home"><div id="wrapper" class="hidden"><div id="loader-cont"><img src="images/ajax-loader.gif" /></div></div>
+<body id="home"><input type="hidden" name="attendanceadmin_id" id="attendanceadmin_id"><div id="wrapper" class="hidden"><div id="loader-cont"><img src="images/ajax-loader.gif" /></div></div>
 <div class="logbox">
 <div class="logo_fixed">
 <div class="header_btn_frame">
@@ -15,15 +14,7 @@
         <div class="header_btn_area">
             <a href="#" onclick="loggedOut();"><span>Log Out</span></a>
             <div class="clear"></div>                     
-            <a href="home.html"><span>Home</span></a>
-            <div class="clear"></div>                        
-            <a href="#"><span>View Attendance History</span></a>
-            <div class="clear"></div>                        
-            <a href="#"><span>View Remarks History</span></a>
-            <div class="clear"></div>                        
-            <a href="#"><span>View Profile</span></a>  
-            <div class="clear"></div>                        
-            <a href="#"><span>Change Password</span></a>                   
+            <a href="home.html"><span>Home</span></a>            <div class="clear"></div>                                    <a href="view_attendance_history.html"><span>View Attendance History</span></a>            <div class="clear"></div>                                    <a href="view_remarks_history.html"><span>View Remarks History</span></a>            <div class="clear"></div>                                    <a href="#"><span>View Profile</span></a>                 <div class="clear"></div>                                    <a href="#"><span>Change Password</span></a>                   
         </div>
 </div>
 <img src="images/logo.png" alt="">
@@ -58,4 +49,4 @@
 <div class="clear"></div>
 <div class="footr">&copy; arishbionaturals.com All Rights Reserved.</div>
 </body>
-</html>
+</html><script src="js/attendance.js"></script>
