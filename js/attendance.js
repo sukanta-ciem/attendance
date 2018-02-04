@@ -2,6 +2,7 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 
 var attendanceadmin_id = localStorage.getItem("attendanceadmin_id");
 var attendancelogin_id = localStorage.getItem("attendancelogin_id");
+document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
 var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
 
@@ -394,3 +395,115 @@ function remarksBtn(){
 	
 	
 }
+
+$(document).on("click", "#attendance_btn", function(){
+	var froms = $("#from").val();
+	var to = $("#to").val();
+	if(froms==="" || to===""){
+		alert("Fill up the required field!");
+		return false;
+	}
+	document.getElementById("wrapper").className = "";
+	var formData = $("#viewAttendance").serializeArray();
+	$.ajax({
+		type: 'post',
+		url: site_url+'api/view_attendance_api.php',
+		data: formData,
+		success: function(msg){
+			var data = JSON.parse(msg);
+			if(data.status === "success"){
+				var docs = data.attendance;
+				if(docs.length === 0){
+					var jsHtml = '<table width="100%" border="0"  cellspacing="0" cellpadding="0">';
+					jsHtml += '<tr>';
+					jsHtml += '<tr><td><strong>Not Found</strong></td>';
+					jsHtml += '</tr>';
+					jsHtml += '</table>';
+				}else{
+					var jsHtml = '<table width="100%" border="0"  cellspacing="0" cellpadding="0">';
+					jsHtml += '<tr>';
+					jsHtml += '<td><strong>SL</strong></td>';
+					jsHtml += '<td><strong>Date</strong></td>';
+					jsHtml += '<td><strong>Duty In</strong></td>';
+					jsHtml += '<td><strong>Duty Out</strong></td>';
+					jsHtml += '</tr>';
+					for(var i=0; i< docs.length; i++){
+						jsHtml += '<tr>';
+						jsHtml += '<td>'+(i+1)+'</td>';
+						jsHtml += '<td>'+docs[i].dutyDate+'</td>';
+						jsHtml += '<td>'+docs[i].dutyIn+'</td>';
+						jsHtml += '<td>'+docs[i].dutyOut+'</td>';
+						jsHtml += '</tr>';
+					}
+					jsHtml += '</table>';
+				}
+				$(".view_tbl").html(jsHtml);
+				document.getElementById("wrapper").className = "hidden";
+			}else{
+				alert("Error Occured!");
+				document.getElementById("wrapper").className = "hidden";
+			}
+		},
+	    error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert('No Active network Connection is present!');
+			document.getElementById("wrapper").className = "hidden";
+			return false;
+	    }
+	});
+});
+
+$(document).on("click", "#remarks_btn", function(){
+	var froms = $("#from").val();
+	var to = $("#to").val();
+	if(froms==="" || to===""){
+		alert("Fill up the required field!");
+		return false;
+	}
+	document.getElementById("wrapper").className = "";
+	var formData = $("#viewRemarks").serializeArray();
+	$.ajax({
+		type: 'post',
+		url: site_url+'api/view_remarks_api.php',
+		data: formData,
+		success: function(msg){
+			var data = JSON.parse(msg);
+			if(data.status === "success"){
+				var docs = data.attendance;
+				if(docs.length === 0){
+					var jsHtml = '<table width="100%" border="0"  cellspacing="0" cellpadding="0">';
+					jsHtml += '<tr>';
+					jsHtml += '<tr><td><strong>Not Found</strong></td>';
+					jsHtml += '</tr>';
+					jsHtml += '</table>';
+				}else{
+					var jsHtml = '<table width="100%" border="0"  cellspacing="0" cellpadding="0">';
+					jsHtml += '<tr>';
+					jsHtml += '<td><strong>SL</strong></td>';
+					jsHtml += '<td><strong>Date</strong></td>';
+					jsHtml += '<td><strong>Time</strong></td>';
+					jsHtml += '<td><strong>Remarks</strong></td>';
+					jsHtml += '</tr>';
+					for(var i=0; i< docs.length; i++){
+						jsHtml += '<tr>';
+						jsHtml += '<td>'+(i+1)+'</td>';
+						jsHtml += '<td>'+docs[i].dutyDate+'</td>';
+						jsHtml += '<td>'+docs[i].dutyTime+'</td>';
+						jsHtml += '<td>'+docs[i].remarks+'</td>';
+						jsHtml += '</tr>';
+					}
+					jsHtml += '</table>';
+				}
+				$(".view_tbl").html(jsHtml);
+				document.getElementById("wrapper").className = "hidden";
+			}else{
+				alert("Error Occured!");
+				document.getElementById("wrapper").className = "hidden";
+			}
+		},
+	    error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert('No Active network Connection is present!');
+			document.getElementById("wrapper").className = "hidden";
+			return false;
+	    }
+	});
+});
