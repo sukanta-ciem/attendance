@@ -30,6 +30,7 @@
 
   <plugin name="cordova-plugin-whitelist" spec="1" />
   <plugin name="cordova-plugin-geolocation" />
+  <plugin name="cordova-plugin-sim" />
   <access origin="*" subdomains="true" />
   <allow-navigation href="*" />
     
