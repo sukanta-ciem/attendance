@@ -28,9 +28,9 @@
     
   <preference name="phonegap-version" value="cli-7.1.0" />
 
+  <plugin name="cordova-plugin-device" />
   <plugin name="cordova-plugin-whitelist" spec="1" />
   <plugin name="cordova-plugin-geolocation" />
-  <plugin name="cordova-plugin-device" />
   <access origin="*" subdomains="true" />
   <allow-navigation href="*" />
     
