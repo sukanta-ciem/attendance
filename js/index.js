@@ -2,8 +2,8 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 	(function() {
 	   // your page initialization code here
 	   // the DOM will be available here
-		var deviceID = device.uuid;
-		alert(deviceID);
+		//var deviceID = device.uuid;
+		//alert(deviceID);
 		document.getElementById("wrapper").className = "";
 		setTimeout(function(){ document.getElementById("wrapper").className = "hidden"; }, 2000);
 		var loggedIn = localStorage.getItem("loggedIn_attendance");
@@ -68,6 +68,9 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
-        console.log("navigator.geolocation works well");
+        var deviceID = device.uuid;
+		alert(deviceID);
+		
+		console.log("navigator.geolocation works well");
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }
