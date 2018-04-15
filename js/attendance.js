@@ -2,6 +2,7 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 
 var attendanceadmin_id = localStorage.getItem("attendanceadmin_id");
 var attendancelogin_id = localStorage.getItem("attendancelogin_id");
+var deviceID = localStorage.getItem("deviceID");
 
 document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
@@ -195,6 +196,7 @@ $(document).on("click", "#duty_in", function(){
 					var atDetails = {
 						"attendanceadmin_id": attendanceadmin_id,
 						"attendancelogin_id": attendancelogin_id,
+						"deviceID": deviceID,
 						"date": todayDate,
 						"duty_in_time": ts,
 						"duty_out_time": "",
@@ -220,6 +222,7 @@ $(document).on("click", "#duty_in", function(){
 					var atDetails = {
 						"attendanceadmin_id": attendanceadmin_id,
 						"attendancelogin_id": attendancelogin_id,
+						"deviceID": deviceID,
 						"date": todayDate,
 						"duty_in_time": ts,
 						"duty_out_time": "",
