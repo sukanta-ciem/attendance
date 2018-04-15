@@ -2,9 +2,19 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 
 var attendanceadmin_id = localStorage.getItem("attendanceadmin_id");
 var attendancelogin_id = localStorage.getItem("attendancelogin_id");
+
 document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
 var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+
+var cameraOptions = {
+	Camera.sourceType : Camera.PictureSourceType.CAMERA,
+	Camera.destinationType : Camera.DestinationType.DATA_URL,
+	Camera.encodingType : Camera.EncodingType.JPEG,
+	Camera.quality : 25,
+	Camera.saveToPhotoAlbum : false,
+	Camera.cameraDirection : Camera.Direction.FRONT
+};
 
 function sync(){
 	document.getElementById("wrapper").className = "";
@@ -125,113 +135,128 @@ $(document).on("click", "#duty_in", function(){
 	}
 	var r = confirm("Are you sure you want to duty in?");
 	if(r == true){
-		navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
-		function onSuccess(position){
+		navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+		function cameraSuccess(imageData){
+			navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+			function onSuccess(position){
 			
-			var today = new Date();
-			var dd = today.getDate();
-			var mm = today.getMonth()+1; //January is 0!
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1; //January is 0!
 
-			var yyyy = today.getFullYear();
-			
-			var hh = today.getHours();
-			var mn = today.getMinutes();
-			var ss = today.getSeconds();
-			
-			if(dd<10){
-				dd='0'+dd;
-			} 
-			if(mm<10){
-				mm='0'+mm;
-			} 
-			var todayDate = dd+'/'+mm+'/'+yyyy;
-			
-			if(hh<10){
-				hh='0'+hh;
+				var yyyy = today.getFullYear();
+				
+				var hh = today.getHours();
+				var mn = today.getMinutes();
+				var ss = today.getSeconds();
+				
+				if(dd<10){
+					dd='0'+dd;
+				} 
+				if(mm<10){
+					mm='0'+mm;
+				} 
+				var todayDate = dd+'/'+mm+'/'+yyyy;
+				
+				if(hh<10){
+					hh='0'+hh;
+				}
+				
+				if(mn<10){
+					mn='0'+mn;
+				}
+				
+				if(ss<10){
+					ss='0'+ss;
+				}
+				
+				var datetime = "Duty In Time: " + todayDate + " @ "  
+								+ hh + ":"  
+								+ mn + ":" 
+								+ ss;
+				
+				//var ts = Math.round((new Date()).getTime() / 1000);
+				var ts = hh + ":" + mn + ":" + ss;
+				
+				var atdet = localStorage.getItem("attendance_detail");
+				
+				var latitude = position.coords.latitude, 
+				longitude = position.coords.longitude, 
+				accuracy = position.coords.accuracy;
+				
+				if(parseInt(accuracy) > 150){
+					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
+					return false;
+				}
+				
+				if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+					var at_det = [];
+					
+					var atDetails = {
+						"attendanceadmin_id": attendanceadmin_id,
+						"attendancelogin_id": attendancelogin_id,
+						"date": todayDate,
+						"duty_in_time": ts,
+						"duty_out_time": "",
+						"camera_in": imageData,
+						"camera_out": "",
+						"latitude_in": latitude,
+						"longitude_in": longitude,
+						"accuracy_in": accuracy,
+						"latitude_out": "",
+						"longitude_out": "",
+						"accuracy_out": "",
+						"remarks": "",
+						"remarks_time": "",
+						"flag": 0
+					};
+					
+					at_det.push(atDetails);
+					localStorage.setItem("attendance_detail", JSON.stringify(at_det));
+					
+				}else{
+					var at_det = JSON.parse(atdet);
+					
+					var atDetails = {
+						"attendanceadmin_id": attendanceadmin_id,
+						"attendancelogin_id": attendancelogin_id,
+						"date": todayDate,
+						"duty_in_time": ts,
+						"duty_out_time": "",
+						"camera_in": imageData,
+						"camera_out": "",
+						"latitude_in": latitude,
+						"longitude_in": longitude,
+						"accuracy_in": accuracy,
+						"latitude_out": "",
+						"longitude_out": "",
+						"accuracy_out": "",
+						"remarks": "",
+						"remarks_time": "",
+						"flag": 0
+					};
+					
+					at_det.push(atDetails);
+					localStorage.setItem("attendance_detail", JSON.stringify(at_det));
+				}
+				
+				$("#duty_in").addClass("disabledButton");
+				$(".duty_in_time_txt").text(datetime);
+				sync();
 			}
-			
-			if(mn<10){
-				mn='0'+mn;
-			}
-			
-			if(ss<10){
-				ss='0'+ss;
-			}
-			
-			var datetime = "Duty In Time: " + todayDate + " @ "  
-							+ hh + ":"  
-							+ mn + ":" 
-							+ ss;
-			
-			//var ts = Math.round((new Date()).getTime() / 1000);
-			var ts = hh + ":" + mn + ":" + ss;
-			
-			var atdet = localStorage.getItem("attendance_detail");
-			
-			var latitude = position.coords.latitude, 
-			longitude = position.coords.longitude, 
-			accuracy = position.coords.accuracy;
-			
-			if(parseInt(accuracy) > 150){
-				alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
+			function onError(){
+				alert("Please Turn on your location and retry!");
 				return false;
 			}
-			
-			if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
-				var at_det = [];
-				
-				var atDetails = {
-					"attendanceadmin_id": attendanceadmin_id,
-					"attendancelogin_id": attendancelogin_id,
-					"date": todayDate,
-					"duty_in_time": ts,
-					"duty_out_time": "",
-					"latitude_in": latitude,
-					"longitude_in": longitude,
-					"accuracy_in": accuracy,
-					"latitude_out": "",
-					"longitude_out": "",
-					"accuracy_out": "",
-					"remarks": "",
-					"remarks_time": "",
-					"flag": 0
-				};
-				
-				at_det.push(atDetails);
-				localStorage.setItem("attendance_detail", JSON.stringify(at_det));
-				
-			}else{
-				var at_det = JSON.parse(atdet);
-				
-				var atDetails = {
-					"attendanceadmin_id": attendanceadmin_id,
-					"attendancelogin_id": attendancelogin_id,
-					"date": todayDate,
-					"duty_in_time": ts,
-					"duty_out_time": "",
-					"latitude_in": latitude,
-					"longitude_in": longitude,
-					"accuracy_in": accuracy,
-					"latitude_out": "",
-					"longitude_out": "",
-					"accuracy_out": "",
-					"remarks": "",
-					"remarks_time": "",
-					"flag": 0
-				};
-				
-				at_det.push(atDetails);
-				localStorage.setItem("attendance_detail", JSON.stringify(at_det));
-			}
-			
-			$("#duty_in").addClass("disabledButton");
-			$(".duty_in_time_txt").text(datetime);
-			sync();
 		}
-		function onError(){
-			alert("Please Turn on your location and retry!");
+		
+		function cameraError(){
+			alert("You have to capture your image to duty in!");
 			return false;
+			
 		}
+		
+		
 	}
 });
 
@@ -242,89 +267,97 @@ $(document).on("click", "#duty_out", function(){
 	}
 	var r = confirm("Are you sure you want to duty Out?");
 	if(r == true){
-		navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
-		function onSuccess(position){
-			
-			var today = new Date();
-			var dd = today.getDate();
-			var mm = today.getMonth()+1; //January is 0!
+		navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+		function cameraSuccess(imageData){
+			navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+			function onSuccess(position){
+				
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1; //January is 0!
 
-			var yyyy = today.getFullYear();
-			
-			var hh = today.getHours();
-			var mn = today.getMinutes();
-			var ss = today.getSeconds();
-			
-			if(dd<10){
-				dd='0'+dd;
-			} 
-			if(mm<10){
-				mm='0'+mm;
-			} 
-			var todayDate = dd+'/'+mm+'/'+yyyy;
-			
-			if(hh<10){
-				hh='0'+hh;
-			}
-			
-			if(mn<10){
-				mn='0'+mn;
-			}
-			
-			if(ss<10){
-				ss='0'+ss;
-			}
-			
-			var datetime = "Duty Out Time: " + todayDate + " @ "  
-							+ hh + ":"  
-							+ mn + ":" 
-							+ ss;
-			
-			var atdet = localStorage.getItem("attendance_detail");
-			
-			var latitude = position.coords.latitude, 
-			longitude = position.coords.longitude, 
-			accuracy = position.coords.accuracy;
-			
-			if(parseInt(accuracy) > 150){
-				alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
-				return false;
-			}
-			
-			if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
-				alert("Today your Duty In time has not been recorded!");
-				return false;
-			}else{
-				var dutyInFlag = false;
-				var at_det = JSON.parse(atdet);
-				for(var i=0; i< at_det.length; i++){
-					if(at_det[i].date == todayDate && at_det[i].duty_in_time != ""){
-						dutyInFlag = true;
-						//var ts = Math.round((new Date()).getTime() / 1000);
-						var ts = hh + ":" + mn + ":" + ss;
-						
-						at_det[i].duty_out_time = ts;
-						at_det[i].latitude_out = latitude;
-						at_det[i].longitude_out = longitude;
-						at_det[i].accuracy_out = accuracy;
-						
-						at_det_string = JSON.stringify(at_det);
-						localStorage.setItem("attendance_detail", at_det_string);
-						
-						$("#duty_out").addClass("disabledButton");
-						$(".duty_out_time_txt").text(datetime);
-						sync();
-					}
+				var yyyy = today.getFullYear();
+				
+				var hh = today.getHours();
+				var mn = today.getMinutes();
+				var ss = today.getSeconds();
+				
+				if(dd<10){
+					dd='0'+dd;
+				} 
+				if(mm<10){
+					mm='0'+mm;
+				} 
+				var todayDate = dd+'/'+mm+'/'+yyyy;
+				
+				if(hh<10){
+					hh='0'+hh;
 				}
 				
-				if(!dutyInFlag){
-					alert("Today your Duty In time has not been recorded!");
+				if(mn<10){
+					mn='0'+mn;
+				}
+				
+				if(ss<10){
+					ss='0'+ss;
+				}
+				
+				var datetime = "Duty Out Time: " + todayDate + " @ "  
+								+ hh + ":"  
+								+ mn + ":" 
+								+ ss;
+				
+				var atdet = localStorage.getItem("attendance_detail");
+				
+				var latitude = position.coords.latitude, 
+				longitude = position.coords.longitude, 
+				accuracy = position.coords.accuracy;
+				
+				if(parseInt(accuracy) > 150){
+					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
 					return false;
 				}
+				
+				if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
+					alert("Today your Duty In time has not been recorded!");
+					return false;
+				}else{
+					var dutyInFlag = false;
+					var at_det = JSON.parse(atdet);
+					for(var i=0; i< at_det.length; i++){
+						if(at_det[i].date == todayDate && at_det[i].duty_in_time != ""){
+							dutyInFlag = true;
+							//var ts = Math.round((new Date()).getTime() / 1000);
+							var ts = hh + ":" + mn + ":" + ss;
+							
+							at_det[i].duty_out_time = ts;
+							at_det[i].camera_out = imageData;
+							at_det[i].latitude_out = latitude;
+							at_det[i].longitude_out = longitude;
+							at_det[i].accuracy_out = accuracy;
+							
+							at_det_string = JSON.stringify(at_det);
+							localStorage.setItem("attendance_detail", at_det_string);
+							
+							$("#duty_out").addClass("disabledButton");
+							$(".duty_out_time_txt").text(datetime);
+							sync();
+						}
+					}
+					
+					if(!dutyInFlag){
+						alert("Today your Duty In time has not been recorded!");
+						return false;
+					}
+				}
+			}
+			function onError(){
+				alert("Turn on your location and retry!");
+				return false;
 			}
 		}
-		function onError(){
-			alert("Turn on your location and retry!");
+		function cameraError(){
+			alert("You have to capture your image to duty in!");
 			return false;
 		}
 	}

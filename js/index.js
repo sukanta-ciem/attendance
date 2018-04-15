@@ -2,14 +2,10 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 	(function() {
 	   // your page initialization code here
 	   // the DOM will be available here
-		//var deviceID = device.uuid;
-		//alert(deviceID);
 		document.getElementById("wrapper").className = "";
 		setTimeout(function(){ document.getElementById("wrapper").className = "hidden"; }, 2000);
 		var loggedIn = localStorage.getItem("loggedIn_attendance");
-		if(loggedIn === "ok"){
-			window.location.href = "home.html";
-		}
+		
 	})();
 	
 	function loginNow(){
@@ -47,7 +43,7 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
     // current GPS coordinates
     //
     var onSuccess = function(position) {
-        alert('Latitude: '          + position.coords.latitude          + '\n' +
+        //alert('Latitude: '          + position.coords.latitude          + '\n' +
               'Longitude: '         + position.coords.longitude         + '\n' +
               'Altitude: '          + position.coords.altitude          + '\n' +
               'Accuracy: '          + position.coords.accuracy          + '\n' +
@@ -55,12 +51,12 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
               'Heading: '           + position.coords.heading           + '\n' +
               'Speed: '             + position.coords.speed             + '\n' +
               'Timestamp: '         + position.timestamp                + '\n');
-    };
+    }
 
     // onError Callback receives a PositionError object
     //
     function onError(error) {
-        alert('code: '    + error.code    + '\n' +
+        //alert('code: '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
     }
 
@@ -69,8 +65,14 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 	document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
         var deviceID = device.uuid;
-		alert(deviceID);
+		//alert(deviceID);
+		localStorage.setItem("deviceID", deviceID);
 		
 		console.log("navigator.geolocation works well");
+		console.log(navigator.camera);
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		
+		if(loggedIn === "ok"){
+			window.location.href = "home.html";
+		}
     }
