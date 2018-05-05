@@ -8,7 +8,7 @@ document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
 var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
 
-var CameraProp : {
+var CameraProp = {
 		sourceType : Camera.PictureSourceType.CAMERA,
 		destinationType : Camera.DestinationType.DATA_URL,
 		encodingType : Camera.EncodingType.JPEG,
