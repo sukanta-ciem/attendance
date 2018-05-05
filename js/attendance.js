@@ -7,23 +7,19 @@ var deviceID = localStorage.getItem("deviceID");
 document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
 var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
-
-var CameraProp = {
-		sourceType : navigator.camera.PictureSourceType.CAMERA,
-		destinationType : navigator.camera.DestinationType.DATA_URL,
-		encodingType : navigator.camera.EncodingType.JPEG,
-		quality : 25,
-		saveToPhotoAlbum : false,
-		cameraDirection : navigator.camera.Direction.FRONT
-};
+var Camera;
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+	Camera = navigator.camera;
+}
 
 var cameraOptions = {
-	sourceType : navigator.camera.PictureSourceType.CAMERA,
-	destinationType : navigator.camera.DestinationType.DATA_URL,
-	encodingType : navigator.camera.EncodingType.JPEG,
+	sourceType : Camera.PictureSourceType.CAMERA,
+	destinationType : Camera.DestinationType.DATA_URL,
+	encodingType : Camera.EncodingType.JPEG,
 	quality : 25,
 	saveToPhotoAlbum : false,
-	cameraDirection : navigator.camera.Direction.FRONT
+	cameraDirection : Camera.Direction.FRONT
 };
 
 function sync(){
