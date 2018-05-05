@@ -1,11 +1,10 @@
 var site_url = "http://www.arishbionaturals.com/attendance/";
+var loggedIn = localStorage.getItem("loggedIn_attendance");
 	(function() {
 	   // your page initialization code here
 	   // the DOM will be available here
 		document.getElementById("wrapper").className = "";
-		setTimeout(function(){ document.getElementById("wrapper").className = "hidden"; }, 2000);
-		var loggedIn = localStorage.getItem("loggedIn_attendance");
-		
+		setTimeout(function(){ document.getElementById("wrapper").className = "hidden"; }, 2000);		
 	})();
 	
 	function loginNow(){

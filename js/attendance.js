@@ -9,16 +9,21 @@ document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
 
 var CameraProp = {
-		sourceType : Camera.PictureSourceType.CAMERA,
-		destinationType : Camera.DestinationType.DATA_URL,
-		encodingType : Camera.EncodingType.JPEG,
+		sourceType : navigator.camera.PictureSourceType.CAMERA,
+		destinationType : navigator.camera.DestinationType.DATA_URL,
+		encodingType : navigator.camera.EncodingType.JPEG,
 		quality : 25,
 		saveToPhotoAlbum : false,
-		cameraDirection : Camera.Direction.FRONT
+		cameraDirection : navigator.camera.Direction.FRONT
 };
 
 var cameraOptions = {
-	Camera : CameraProp
+	sourceType : navigator.camera.PictureSourceType.CAMERA,
+	destinationType : navigator.camera.DestinationType.DATA_URL,
+	encodingType : navigator.camera.EncodingType.JPEG,
+	quality : 25,
+	saveToPhotoAlbum : false,
+	cameraDirection : navigator.camera.Direction.FRONT
 };
 
 function sync(){
