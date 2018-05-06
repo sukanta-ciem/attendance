@@ -103,15 +103,15 @@ var loggedIn = localStorage.getItem("loggedIn_attendance");
 			  contactsNo = "No Sim Info!";
 		  }
 		  localStorage.setItem("contacts", contactsNo);
+		  
+		  console.log("navigator.geolocation works well");
+		  console.log(navigator.camera);
+		  navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		}
 
 		function errorCallback(error) {
 		  console.log(error);
 		}
-		
-		console.log("navigator.geolocation works well");
-		console.log(navigator.camera);
-		navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		
 		if(loggedIn === "ok"){
 			window.location.href = "home.html";
