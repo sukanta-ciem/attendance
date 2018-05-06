@@ -69,6 +69,7 @@ var loggedIn = localStorage.getItem("loggedIn_attendance");
 		
 		var contactsNo = "No Sim Info!";
 		localStorage.setItem("contacts", contactsNo);
+		hasReadPermission();
 		
 		// Android only: check permission
 		function hasReadPermission() {
