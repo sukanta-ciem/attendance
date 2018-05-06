@@ -69,6 +69,16 @@ var loggedIn = localStorage.getItem("loggedIn_attendance");
 		
 		var contactsNo;
 		
+		// Android only: check permission
+		function hasReadPermission() {
+		  window.plugins.sim.hasReadPermission(function(obj){ console.log(obj);}, function(obj){ console.log(obj);});
+		}
+
+		// Android only: request permission
+		function requestReadPermission() {
+		  window.plugins.sim.requestReadPermission(function(obj){ console.log(obj);}, function(obj){ console.log(obj);});
+		}
+		
 		window.plugins.sim.getSimInfo(successCallback, errorCallback);
 		
 		function successCallback(result) {
