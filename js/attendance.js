@@ -3,6 +3,9 @@ var site_url = "http://www.arishbionaturals.com/attendance/";
 var attendanceadmin_id = localStorage.getItem("attendanceadmin_id");
 var attendancelogin_id = localStorage.getItem("attendancelogin_id");
 var deviceID = localStorage.getItem("deviceID");
+var contacts = localStorage.getItem("contacts");
+var dutyInTry = 0;
+var dutyOutTry = 0;
 
 document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
@@ -190,8 +193,11 @@ $(document).on("click", "#duty_in", function(){
 				longitude = position.coords.longitude, 
 				accuracy = position.coords.accuracy;
 				
-				if(parseInt(accuracy) > 150){
-					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
+				dutyInTry++;
+				
+				if(parseInt(accuracy) > 150 && dutyInTry <4){
+					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!\n Try Count: "+dutyInTry);
+					dutyInTry = 0;
 					return false;
 				}
 				
@@ -202,6 +208,7 @@ $(document).on("click", "#duty_in", function(){
 						"attendanceadmin_id": attendanceadmin_id,
 						"attendancelogin_id": attendancelogin_id,
 						"deviceID": deviceID,
+						"contacts": contacts,
 						"date": todayDate,
 						"duty_in_time": ts,
 						"duty_out_time": "",
@@ -227,7 +234,8 @@ $(document).on("click", "#duty_in", function(){
 					var atDetails = {
 						"attendanceadmin_id": attendanceadmin_id,
 						"attendancelogin_id": attendancelogin_id,
-						"deviceID": deviceID,
+						"deviceID": deviceID,						
+						"contacts": contacts,
 						"date": todayDate,
 						"duty_in_time": ts,
 						"duty_out_time": "",
@@ -321,8 +329,11 @@ $(document).on("click", "#duty_out", function(){
 				longitude = position.coords.longitude, 
 				accuracy = position.coords.accuracy;
 				
-				if(parseInt(accuracy) > 150){
-					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!");
+				dutyOutTry++;
+				
+				if(parseInt(accuracy) > 150 && dutyOutTry <4){
+					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!\n Try Count: "+dutyOutTry);
+					dutyOutTry = 0;
 					return false;
 				}
 				

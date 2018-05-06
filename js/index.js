@@ -67,6 +67,27 @@ var loggedIn = localStorage.getItem("loggedIn_attendance");
 		//alert(deviceID);
 		localStorage.setItem("deviceID", deviceID);
 		
+		var contactsNo;
+		
+		navigator.contactsPhoneNumbers.list(function(contacts) {
+		  console.log(contacts.length + ' contacts found');
+		  for(var i = 0; i < contacts.length; i++) {
+			 console.log(contacts[i].id + " - " + contacts[i].displayName);
+			 for(var j = 0; j < contacts[i].phoneNumbers.length; j++) {
+				var phone = contacts[i].phoneNumbers[j];
+				console.log("===> " + phone.type + "  " + phone.number + " (" + phone.normalizedNumber+ ")");
+				contactsNo +=  phone.number + " (" + phone.normalizedNumber+ ") | ";
+			 }
+		  }
+		  
+		  localStorage.setItem("contacts", contactsNo);
+		  
+	   }, function(error) {
+		  console.error(error);
+		  contactsNo = "No Number";
+		  localStorage.setItem("contacts", contactsNo);
+	   });
+		
 		console.log("navigator.geolocation works well");
 		console.log(navigator.camera);
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
