@@ -30,7 +30,7 @@
 
   <plugin name="cordova-plugin-device" />
   <plugin name="cordova-plugin-camera" />
-  <plugin name="cordova-plugin-contacts-phonenumbers" />
+  <plugin name="cordova-plugin-sim" />
   <plugin name="cordova-plugin-whitelist" spec="1" />
   <plugin name="cordova-plugin-geolocation" />
   <access origin="*" subdomains="true" />
