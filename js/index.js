@@ -67,22 +67,41 @@ var loggedIn = localStorage.getItem("loggedIn_attendance");
 		//alert(deviceID);
 		localStorage.setItem("deviceID", deviceID);
 		
-		var contactsNo;
+		var contactsNo = "No Sim Info!";
+		localStorage.setItem("contacts", contactsNo);
 		
 		// Android only: check permission
 		function hasReadPermission() {
-		  window.plugins.sim.hasReadPermission(function(obj){ console.log(obj);}, function(obj){ console.log(obj);});
+			window.plugins.sim.hasReadPermission(function(res){ 
+				if(!res){
+					requestReadPermission();
+				}else{
+					window.plugins.sim.getSimInfo(successCallback, errorCallback);
+				}
+			}, function(obj){
+				console.log(obj);
+			});
 		}
 
 		// Android only: request permission
 		function requestReadPermission() {
-		  window.plugins.sim.requestReadPermission(function(obj){ console.log(obj);}, function(obj){ console.log(obj);});
+			window.plugins.sim.requestReadPermission(function(obj){
+				window.plugins.sim.getSimInfo(successCallback, errorCallback);
+			}, function(obj){
+				console.log(obj);
+			});
 		}
 		
-		window.plugins.sim.getSimInfo(successCallback, errorCallback);
+		
 		
 		function successCallback(result) {
-		  console.log(result);
+		  //console.log(result);
+		  var simInfo = result.cards;
+		  contactsNo = simInfo[0].phoneNumber;
+		  if(!contactsNo){
+			  contactsNo = "No Sim Info!";
+		  }
+		  localStorage.setItem("contacts", contactsNo);
 		}
 
 		function errorCallback(error) {
