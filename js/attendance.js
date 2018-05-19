@@ -144,10 +144,14 @@ $(document).on("click", "#duty_in", function(){
 	}
 	var r = confirm("Are you sure you want to duty in?");
 	if(r == true){
-		navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
-		function cameraSuccess(imageData){
-			navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
-			function onSuccess(position){
+		//navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+		//function cameraSuccess(imageData){
+		function onSuccess(position){
+			//navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+			navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+			//function onSuccess(position){
+			function cameraSuccess(imageData){
 			
 				var today = new Date();
 				var dd = today.getDate();
@@ -195,11 +199,11 @@ $(document).on("click", "#duty_in", function(){
 				
 				dutyInTry++;
 				
-				if(parseInt(accuracy) > 150 && dutyInTry <4){
+				/*if(parseInt(accuracy) > 150 && dutyInTry <4){
 					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!\n Try Count: "+dutyInTry);
 					dutyInTry = 0;
 					return false;
-				}
+				}*/
 				
 				if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
 					var at_det = [];
@@ -260,16 +264,17 @@ $(document).on("click", "#duty_in", function(){
 				$(".duty_in_time_txt").text(datetime);
 				sync();
 			}
-			function onError(){
-				alert("Please Turn on your location and retry!");
+			
+			function cameraError(){
+				alert("You have to capture your image to duty in!");
 				return false;
+			
 			}
 		}
 		
-		function cameraError(){
-			alert("You have to capture your image to duty in!");
+		function onError(){
+			alert("Please Turn on your location and retry!");
 			return false;
-			
 		}
 		
 		
@@ -283,10 +288,14 @@ $(document).on("click", "#duty_out", function(){
 	}
 	var r = confirm("Are you sure you want to duty Out?");
 	if(r == true){
-		navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
-		function cameraSuccess(imageData){
-			navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
-			function onSuccess(position){
+		//navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+		//function cameraSuccess(imageData){
+		function onSuccess(position){
+			//navigator.geolocation.getCurrentPosition(onSuccess, onError, locationOption);
+			navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+			//function onSuccess(position){
+			function cameraSuccess(imageData){
 				
 				var today = new Date();
 				var dd = today.getDate();
@@ -331,11 +340,11 @@ $(document).on("click", "#duty_out", function(){
 				
 				dutyOutTry++;
 				
-				if(parseInt(accuracy) > 150 && dutyOutTry <4){
+				/*if(parseInt(accuracy) > 150 && dutyOutTry <4){
 					alert("Your location is not accurate enough!\n Please Turn On your GPS and Internet and try again!\n Try Count: "+dutyOutTry);
 					dutyOutTry = 0;
 					return false;
-				}
+				}*/
 				
 				if(atdet === null || atdet === "null" || typeof atdet === typeof undefined || atdet == "" || atdet == "[]"){
 					alert("Today your Duty In time has not been recorded!");
@@ -370,13 +379,17 @@ $(document).on("click", "#duty_out", function(){
 					}
 				}
 			}
-			function onError(){
-				alert("Turn on your location and retry!");
+			function cameraError(){
+				alert("You have to capture your image to duty out!");
 				return false;
 			}
 		}
-		function cameraError(){
+		/*function cameraError(){
 			alert("You have to capture your image to duty in!");
+			return false;
+		}*/
+		function onError(){
+			alert("Turn on your location and retry!");
 			return false;
 		}
 	}
