@@ -17,9 +17,9 @@ var loggedIn = localStorage.getItem("loggedIn_attendance");
 		document.getElementById("wrapper").className = "";
 		var formData = $("#loginForm").serializeArray();
 		$.ajax({
-			type: 'post',
+			type: 'GET',
 			url: site_url+'api/login_api.php',
-			data: formData,
+			data: 'user_name='+user_name+'&user_password='+user_password,
 			success: function(msg){
 				var data = JSON.parse(msg);
 				if(data.status === "success"){
