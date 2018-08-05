@@ -9,7 +9,7 @@ var dutyOutTry = 0;
 
 document.getElementById("attendanceadmin_id").value = attendanceadmin_id;
 
-var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+var locationOption = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: false };
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
